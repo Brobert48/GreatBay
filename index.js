@@ -40,7 +40,7 @@ function Product(title, category, bid, create) {
                 h_bid: that.bid,
             },
             function (err, res) {
-                connection.end();
+                // connection.end();
                 start();
                 console.log("Your item has been added!!");
             }
@@ -62,7 +62,7 @@ function Product(title, category, bid, create) {
                     that.updateProduct();
                 } else {
                     console.log("Sorry your bid was too low...");
-                    connection.end();
+                    start();// connection.end();
                 }
             });
     }
@@ -79,7 +79,8 @@ function Product(title, category, bid, create) {
                 }
             ],
             function (err, res) {
-                connection.end();
+                start();
+                // connection.end();
             }
         );
 
@@ -144,7 +145,7 @@ function BIDpromptOne(catArray) {
             });
     });
 }
-function BIDpromptTwo(titleArray, category) {
+function BIDpromptTwo(titleArray) {
     var titles = titleArray;
     inquirer.prompt([
         {
@@ -211,7 +212,7 @@ function start() {
             type: "list",
             name: "action",
             message: "Select [POST] to put an item up for auction, [BID] to place a bid on an item?",
-            choices: ["POST", "BID"],
+            choices: ["POST", "BID","Leave"],
 
         }
     ]).then(function (user) {
@@ -220,6 +221,9 @@ function start() {
         }
         if (user.action === "BID") {
             choseBID();
+        }
+        if (user.action === "Leave") {
+            connection.end();
         }
     });
 }
